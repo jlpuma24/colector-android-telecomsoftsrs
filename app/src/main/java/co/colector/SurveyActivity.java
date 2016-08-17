@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -166,6 +167,7 @@ public class SurveyActivity extends AppCompatActivity implements OnDataBaseSave,
     private ArrayList<String> copyArrayAdapter = new ArrayList<String>();
     private ArrayList<String> pivotAdapter = new ArrayList<String>();
 
+    private ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -568,6 +570,9 @@ public class SurveyActivity extends AppCompatActivity implements OnDataBaseSave,
         AlertDialog.Builder myDialog = new AlertDialog.Builder(SurveyActivity.this);
         myDialog.setTitle(title);
 
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Cargando..");
+
         final ArrayList<String> arrayAdapter = new ArrayList<String>();
         copyArrayAdapter = getCopyArrayAdapter(question);
         pivotAdapter = getPivotAdapter(question);
@@ -707,6 +712,10 @@ public class SurveyActivity extends AppCompatActivity implements OnDataBaseSave,
     }
 
     private ArrayList<String> fillAdapter(Question question, ArrayList<String> adapter, boolean needCorrectValue){
+
+        if (needCorrectValue)
+            progressDialog.show();
+
         for (ResponseComplex responseComplex: options){
             RealmList<ResponseItem> responseItems = responseComplex.getResponses();
             String tag = "";
@@ -717,6 +726,10 @@ public class SurveyActivity extends AppCompatActivity implements OnDataBaseSave,
             else
                 adapter.add(tag);
         }
+
+
+        if (!needCorrectValue)
+            progressDialog.dismiss();
 
         return adapter;
     }
