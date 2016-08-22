@@ -770,7 +770,7 @@ public class SurveyActivity extends AppCompatActivity implements OnDataBaseSave,
 
         public void onDateSet(DatePicker view, int year, int month, int day) {
             // Do something with the date chosen by the user
-            toPrint.setText(day + "/" + month + "/" + year);
+            toPrint.setText(day + "/" + (month + 1) + "/" + year);
         }
     }
 
